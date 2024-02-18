@@ -1,0 +1,357 @@
+There are a lot of Files for FrontEnd as well Backend. It's very difficult to put all the code.
+GitHub Link will be shared, Please have all the codes from there.
+
+I am putting only Few code of frontEnd/backEnd and everything will be on my gitHub account.
+
+FrontEnd Code:
+************CreateProductForm***************
+.createProductContainer{
+    /* background-color: rgb(0, 0, 22) !important; */
+    padding: 0rem 5rem;   
+}
+**************CreateProductDemo.jsx***********
+
+import { Box } from 'mdi-material-ui'
+import React from 'react'
+
+const CreateProuductDemo = () => {
+  return (
+    <Box className='text-black'>
+        
+    </Box>
+  )
+}
+export default CreateProuductDemo
+
+************CreateProductForm.jsx*****************
+import { useState } from "react";
+import { Typography } from "@mui/material";
+import {
+  Grid,
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
+
+import { Fragment } from "react";
+import "./CreateProductForm.css";
+import { useDispatch } from "react-redux";
+import { createProduct } from "../../../Redux/Customers/Product/Action";
+
+
+const initialSizes = [
+  { name: "Small Mg", quantity: 0 },
+  { name: "Medium Mg", quantity: 0 },
+  { name: "High Mg", quantity: 0 },
+];
+
+const CreateProductForm = () => {
+  
+  const [productData, setProductData] = useState({
+    imageUrl: "",
+    brand: "",
+    title: "",
+    discountedPrice: "",
+    price: "",
+    discountPersent: "",
+    size: initialSizes,
+    quantity: "",
+    topLavelCategory: "",
+    secondLavelCategory: "",
+    thirdLavelCategory: "",
+    description: "",
+  });
+const dispatch=useDispatch();
+const jwt=localStorage.getItem("jwt")
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProductData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSizeChange = (e, index) => {
+    let { name, value } = e.target;
+    name==="size_quantity"?name="quantity":name=e.target.name;
+
+    const sizes = [...productData.size];
+    sizes[index][name] = value;
+    setProductData((prevState) => ({
+      ...prevState,
+      size: sizes,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(createProduct({data:productData,jwt}))
+    console.log(productData);
+  };
+
+  return (
+    <Fragment className="createProductContainer ">
+      <Typography
+        variant="h3"
+        sx={{ textAlign: "center" }}
+        className="py-10 text-center "
+      >
+        Add New Product
+      </Typography>
+      <form
+        onSubmit={handleSubmit}
+        className="createProductContainer min-h-screen"
+      >
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Image URL"
+              name="imageUrl"
+              value={productData.imageUrl}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Brand"
+              name="brand"
+              value={productData.brand}
+              onChange={handleChange}
+            />
+          </Grid>
+        
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Title"
+              name="title"
+              value={productData.title}
+              onChange={handleChange}
+            />
+          </Grid>
+          
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Quantity"
+              name="quantity"
+              value={productData.quantity}
+              onChange={handleChange}
+              type="number"
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              label="Price"
+              name="price"
+              value={productData.price}
+              onChange={handleChange}
+              type="number"
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              label="Discounted Price"
+              name="discountedPrice"
+              value={productData.discountedPrice}
+              onChange={handleChange}
+              type="number"
+            />
+          </Grid>
+          
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              label="Discount Percentage"
+              name="discountPersent"
+              value={productData.discountPersent}
+              onChange={handleChange}
+              type="number"
+            />
+          </Grid>
+          <Grid item xs={6} sm={4}>
+            <FormControl fullWidth>
+              <InputLabel>Top Level Category</InputLabel>
+              <Select
+                name="topLavelCategory"
+                value={productData.topLavelCategory}
+                onChange={handleChange}
+                label="Top Level Category"
+              >
+                <MenuItem value="internalMedicine">Internal Medicine</MenuItem>
+                <MenuItem value="surgery">Surgery</MenuItem>
+                <MenuItem value="pediatrics">Pediatrics</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6} sm={4}>
+            <FormControl fullWidth>
+              <InputLabel>Second Level Category</InputLabel>
+              <Select
+                name="secondLavelCategory"
+                value={productData.secondLavelCategory}
+                onChange={handleChange}
+                label="Second Level Category"
+              >
+                <MenuItem value="cardiology">Cardiology</MenuItem>
+                <MenuItem value="gastroenterology">Gastroenterology</MenuItem>
+                <MenuItem value="endocrinology">Endocrinology</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6} sm={4}>
+            <FormControl fullWidth>
+              <InputLabel>Third Level Category</InputLabel>
+              <Select
+                name="thirdLavelCategory"
+                value={productData.thirdLavelCategory}
+                onChange={handleChange}
+                label="Third Level Category"
+              >
+                <MenuItem value="generalSurgery">General Surgery</MenuItem>
+                <MenuItem value="neurosurgery">Neurosurgery</MenuItem>
+                <MenuItem value="cardiothoracicSurgery">Cardiothoracic Surgery</MenuItem>
+                <MenuItem value="neonatology">Neonatology</MenuItem>
+                <MenuItem value="generalSurgery">General Surgery</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              id="outlined-multiline-static"
+              label="Description"
+              multiline
+              name="description"
+              rows={3}
+              onChange={handleChange}
+              value={productData.description}
+            />
+          </Grid>
+          {productData.size.map((size, index) => (
+            <Grid container item spacing={3} >
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Size Name"
+                  name="name"
+                  value={size.name}
+                  onChange={(event) => handleSizeChange(event, index)}
+                  required
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Quantity"
+                  name="size_quantity"
+                  type="number"
+                  onChange={(event) => handleSizeChange(event, index)}
+                  required
+                  fullWidth
+                />
+              </Grid> </Grid>
+            
+          ))}
+          <Grid item xs={12} >
+            <Button
+              variant="contained"
+              sx={{ p: 1.8 }}
+              className="py-20"
+              size="large"
+              type="submit"
+            >
+              Add New Product
+            </Button>
+            
+          </Grid>
+        </Grid>
+      </form>
+    </Fragment>
+  );
+};
+
+export default CreateProductForm;
+
+BackEnd Code:
+
+*************AdminOrderController.java***************
+package com.zosh.controller;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.zosh.exception.OrderException;
+import com.zosh.modal.Order;
+import com.zosh.response.ApiResponse;
+import com.zosh.service.OrderService;
+
+@RestController
+@RequestMapping("/api/admin/orders")
+public class AdminOrderController {
+	
+	private OrderService orderService;
+	
+	public AdminOrderController(OrderService orderService) {
+		this.orderService=orderService;
+	}
+	
+	@GetMapping("/")
+	public ResponseEntity<List<Order>> getAllOrdersHandler(){
+		List<Order> orders=orderService.getAllOrders();
+		
+		return new ResponseEntity<>(orders,HttpStatus.ACCEPTED);
+	}
+	
+	@PutMapping("/{orderId}/confirmed")
+	public ResponseEntity<Order> ConfirmedOrderHandler(@PathVariable Long orderId,
+			@RequestHeader("Authorization") String jwt) throws OrderException{
+		Order order=orderService.confirmedOrder(orderId);
+		return new ResponseEntity<Order>(order,HttpStatus.ACCEPTED);
+	}
+	
+	@PutMapping("/{orderId}/ship")
+	public ResponseEntity<Order> shippedOrderHandler(@PathVariable Long orderId,
+			@RequestHeader("Authorization") String jwt) throws OrderException{
+		Order order=orderService.shippedOrder(orderId);
+		return new ResponseEntity<Order>(order,HttpStatus.ACCEPTED);
+	}
+	
+	@PutMapping("/{orderId}/deliver")
+	public ResponseEntity<Order> deliveredOrderHandler(@PathVariable Long orderId,
+			@RequestHeader("Authorization") String jwt) throws OrderException{
+		Order order=orderService.deliveredOrder(orderId);
+		return new ResponseEntity<Order>(order,HttpStatus.ACCEPTED);
+	}
+	
+	@PutMapping("/{orderId}/cancel")
+	public ResponseEntity<Order> canceledOrderHandler(@PathVariable Long orderId,
+			@RequestHeader("Authorization") String jwt) throws OrderException{
+		Order order=orderService.cancledOrder(orderId);
+		return new ResponseEntity<Order>(order,HttpStatus.ACCEPTED);
+	}
+	
+	@DeleteMapping("/{orderId}/delete")
+	public ResponseEntity<ApiResponse> deleteOrderHandler(@PathVariable Long orderId,
+			@RequestHeader("Authorization") String jwt) throws OrderException{
+		orderService.deleteOrder(orderId);
+		ApiResponse res=new ApiResponse("Order Deleted Successfully",true);
+		System.out.println("delete method working....");
+		return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
+	}
+}
